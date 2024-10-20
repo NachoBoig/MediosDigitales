@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos los Comentarios</title>
+    <link rel="stylesheet" href="opiniones.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos CSS para aplicar el tipo de fuente y el espaciado */
+        .comment {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin-bottom: 15px; /* Espacio entre comentarios */
+        }
+        .comment strong {
+            font-size: 16px; /* Tamaño de fuente para los títulos */
+        }
+        .comment span {
+            font-size: 14px; /* Tamaño de fuente para el texto */
+        }
+        .comment-section {
+            margin-bottom: 20px; /* Espacio entre las secciones de nombre, película y comentario */
+        }
+        .volver {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="comments-section">
+        <div class="Filtro">
+            <h1>Todas las Reseñas</h1>
+            <div class="volver">
+                <a href="opiniones.html">volver</a>
+            </div>
+            <div id="noResultsMessage" style="color: red; display: none;">No hay películas con ese filtro.</div> <br>
+            <div class="filtro">
+                <select id="genreFilter">
+                    <option value="">Todos los géneros</option>
+                    <option value="acción">Acción</option>
+                    <option value="comedia">Comedia</option>
+                    <option value="drama">Drama</option>
+                    <option value="terror">Terror</option>
+                    <option value="cienciaFiccion">Ciencia Ficción</option>
+                    <option value="fantasia">Fantasía</option>
+                </select>
+                <button id="filterButton">Filtrar</button>
+            </div>
+        </div>
+
+        <section class="caja">
+            <div id="all-comments"></div>
+        </section>
+    </div>
+
+    <script>
+        const API_URL = 'https://api.jsonbin.io/v3/b/66fabe03e41b4d34e43ab133';  // Reemplaza con el ID de tu bin
+        const API_KEY = '$2a$10$IySOsp8KPzkmNsT3HX4iOefVmsBhQm.V0KwP6k6sdeJflkVcqm1ry';  // Reemplaza con tu API Key de JSONBin
+
+        // Función para obtener los comentarios del bin
+        async function fetchComments() {
+            const response = await fetch(API_URL, {
+                method: 'GET',
+                headers: {
+                    'X-Master-Key': API_KEY
+                }
+            });
+            const data = await response.json();
+            return data.record.comments;
+        }
+
+        // Mostrar todos los comentarios con opción de filtro
+        function displayAllComments(comments, filterGenre = '') {
+            const allCommentsDiv = document.getElementById('all-comments');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            allCommentsDiv.innerHTML = '';  // Limpiar comentarios previos
+
+            // Filtrar los comentarios por género si hay un filtro activo
+            const filteredComments = filterGenre 
+                ? comments.filter(comment => comment.genre === filterGenre)
+                : comments;
+
+            // Mostrar el mensaje si no hay comentarios para el filtro seleccionado
+            if (filteredComments.length === 0) {
+                noResultsMessage.style.display = 'block';  // Mostrar mensaje
+            } else {
+                noResultsMessage.style.display = 'none';  // Ocultar mensaje si hay comentarios
+                filteredComments.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.classList.add('comment');
+                    
+                    // Formato para mostrar el nombre, película favorita y comentario con separación
+                    commentDiv.innerHTML = `
+                        <div class="comment-section"><strong>Nombre:</strong> <span>${comment.username}</span></div>
+                        <div class="comment-section"><strong>Película Favorita:</strong> <span>${comment.favoriteMovie}</span></div>
+                        <div class="comment-section"><strong>Comentario:</strong> <br> <span>${comment.message}</span></div>`;
+                    
+                    allCommentsDiv.appendChild(commentDiv);
+                });
+            }
+        }
+
+        // Cuando el documento cargue, obtenemos y mostramos todos los comentarios
+        document.addEventListener('DOMContentLoaded', async () => {
+            const comments = await fetchComments();
+            displayAllComments(comments);
+
+            // Evento de filtro por género
+            document.getElementById('filterButton').addEventListener('click', () => {
+                const genreFilter = document.getElementById('genreFilter').value;
+                displayAllComments(comments, genreFilter);
+            });
+        });
+    </script>
+</body>
+</html>
+
+

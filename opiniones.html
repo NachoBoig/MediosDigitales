@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios</title>
+    <link rel="stylesheet" href="opiniones.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <img src="imagenes/redes.png" alt="" width="100px" height="100px">
+        <h1>
+            Medios Digitales Web
+        </h1>       
+    </header>
+
+    <div class="natbar">
+        <nav>
+            <a href="index.html">Principal</a>
+            <a href="opiniones.html">reseñas</a>
+        </nav>
+    </div>
+
+    <div class="comments-section">
+        <h1>Deja una reseña</h1>
+
+            <div class="comment-form">
+                <h3>Nombre</h3>
+                <input type="text" id="username" placeholder="Tu nombre"><br>
+
+                <h3>Película</h3>
+                <input type="text" id="favoriteMovie" placeholder="Tu película favorita"><br>
+
+
+                <select id="genre">
+                    <option value="">Selecciona un género</option>
+                    <option value="acción">Acción</option>
+                    <option value="comedia">Comedia</option>
+                    <option value="drama">Drama</option>
+                    <option value="terror">Terror</option>
+                    <option value="cienciaFiccion">Ciencia Ficción</option>
+                    <option value="fantasia">Fantasía</option>
+                </select><br>
+
+                <h4>Reseña</h4>
+                <textarea id="newComment" rows="3" placeholder="Escribe tu comentario"></textarea><br>
+                <button id="submitComment" class="btn">Enviar Reseña</button>
+            
+                <!-- Mensaje de error -->
+                <div id="errorMessage" style="color: red; display: none;">Por favor, completa todos los campos.</div>
+            </div>
+        
+        
+
+
+        <h1>Últimas Reseñas</h1>
+
+        <!-- Sección para mostrar comentarios -->
+        <section class="caja">
+            <div id="comments"></div>
+        </section>
+        
+
+        <!-- Enlace para ver todos los comentarios -->
+        <div class="view-all">
+            <a href="opinionesCompletas.html">Ver todos las reseñas</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
